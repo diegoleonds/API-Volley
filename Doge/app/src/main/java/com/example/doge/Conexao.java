@@ -31,7 +31,7 @@ public class Conexao {
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
-                       tv.setText("Response is: "+ response.substring(0, 500));
+                       tv.setText("Response is: "+ response.toString());
 
                     }
 

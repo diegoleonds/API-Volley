@@ -2,6 +2,8 @@ package com.example.doge;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Adapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,10 +21,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Conexao {
 
-    private final String url = "https://dog.ceo/api/breeds/list";
+    private final String url = "https://dog.ceo/api/breeds/list/all";
     private ArrayList<String> dados;
 
     private RequestQueue queue;
@@ -60,9 +63,9 @@ public class Conexao {
         queue.add(stringRequest);
     }
 
-    public void passarParaArray(final ArrayList<Cachorrinho> cachorrinhos) {
+    public void atualizarAdapter(final AdapterCachorros adapterCachorros) {
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
                     @Override
@@ -70,21 +73,54 @@ public class Conexao {
 
                         try {
 
+                            /*
+
                             ArrayList<String> auxList = new ArrayList<String>();
                             JSONArray aux = response.getJSONArray("message");
+                             */
 
+                            JSONObject jsonObject = response.getJSONObject("message");
+                            Iterator<String> keys = jsonObject.keys();
+
+                            while (keys.hasNext()){
+
+                                String key = keys.next();
+
+                                if (jsonObject.get(key) instanceof JSONArray){
+
+                                    JSONArray raca = (JSONArray) jsonObject.get(key);
+                                    adapterCachorros.getCachorrinhos().add(new Cachorrinho(key));
+
+                                    Log.e("Key: ", key);
+
+                                    if (raca.length() > 0){
+
+                                        for (int i = 0; i < raca.length(); i++)
+
+                                            adapterCachorros.getCachorrinhos().
+                                                    add(new Cachorrinho(raca.get(i).toString()));
+                                    }
+
+                                }
+                            }
+
+                            adapterCachorros.notifyDataSetChanged();
+
+                            /*
                             for (int i = 0; i < aux.length(); i++) {
 
-                                cachorrinhos.add(new Cachorrinho
-                                        (capitalize(aux.get(i).toString())));
+                                adapterCachorros.getCachorrinhos().
+                                        add(new Cachorrinho(aux.get(i).toString()));
 
                                 //Log.e("Raças: ", cachorrinhos.get(i).toString());
                             }
 
+                            adapterCachorros.notifyDataSetChanged();
+                             */
 
                         } catch (JSONException e) {
 
-                            Log.e("erro", " triste");
+                            Log.e("erro", e.toString());
                         }
 
                     }
@@ -94,13 +130,11 @@ public class Conexao {
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
 
-                        Log.e("erro", " triste");
+                        Log.e("erro", error.toString());
                     }
                 });
 
         queue.add(jsonObjectRequest);
-
-
     }
 
     private String capitalize(String s) {

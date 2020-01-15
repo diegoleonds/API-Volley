@@ -1,36 +1,32 @@
 package com.example.doge;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private Conexao conexao;
-    private ListView lv;
+    private RecyclerView rv;
+    private AdapterCachorros ac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        rv = findViewById(R.id.rv);
+        ac = new AdapterCachorros(this);
+
         conexao = new Conexao(this);
+        conexao.atualizarAdapter(ac);
 
-        final ArrayList<Cachorrinho> cachorrinhos = new ArrayList<Cachorrinho>();
-        conexao.passarParaArray(cachorrinhos);
+        rv.setAdapter(ac);
 
-        Log.e("Raças: ", cachorrinhos.get(0).toString());
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
+        rv.setLayoutManager(lm);
+
     }
 }

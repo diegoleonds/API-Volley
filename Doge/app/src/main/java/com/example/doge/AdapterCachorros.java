@@ -1,5 +1,7 @@
 package com.example.doge;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,10 +22,14 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
     private ArrayList<Dog> dogs;
     private Context c;
 
-    public AdapterCachorros(Context c){
+    private int tempoDeAnimacao;
+
+    public AdapterCachorros(Context c, int tempoDeAnimacao) {
 
         dogs = new ArrayList<Dog>();
         this.c = c;
+
+        this.tempoDeAnimacao = tempoDeAnimacao;
     }
 
     @NonNull
@@ -40,35 +46,62 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
     @Override
     public void onBindViewHolder(@NonNull AdapterCachorros.CachorrosViewHolder holder, int position) {
 
-        if (holder != null){
+        if (holder != null) {
 
             holder.tv.setText(dogs.get(position).getRaca());
+            animacao(holder.itemView);
         }
     }
 
     @Override
-    public int getItemCount() { return dogs.size(); }
+    public int getItemCount() {
+        return dogs.size();
+    }
+
+    private void animacao(View itemView) {
+
+        itemView.setAlpha(0f);
+        itemView.setVisibility(View.VISIBLE);
+
+        itemView.animate()
+                .alpha(1f)
+                .setDuration(tempoDeAnimacao)
+                .setListener(null);
+
+        /*
+        boolean isNotFirstItem = i == -1;
+        i++;
+        itemView.setAlpha(0.f);
+        AnimatorSet animatorSet = new AnimatorSet();
+        ObjectAnimator animator = ObjectAnimator.ofFloat(itemView, "alpha", 0.f, 0.5f, 1.0f);
+        ObjectAnimator.ofFloat(itemView, "alpha", 0.f).start();
+        animator.setStartDelay(isNotFirstItem ? 150 / 2 : (i * 150 / 3));
+        animator.setDuration(500);
+        animatorSet.play(animator);
+        animator.start();
+         */
+    }
 
     public ArrayList<Dog> getDogs() {
         return dogs;
     }
 
-    public class CachorrosViewHolder extends RecyclerView.ViewHolder{
+    public class CachorrosViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView tv;
-        private final ImageView imageView;
 
         public CachorrosViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             this.tv = itemView.findViewById(R.id.nome_cachorrinho);
-            this.imageView = itemView.findViewById(R.id.foto_cachorrinho);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     Dog d = dogs.get(getAdapterPosition());
+                    Log.e("Adapter click raça: ", d.getRaca() + ", " +
+                            d.isTemSubRacas());
 
                     if (d.isTemSubRacas()) {
 
@@ -87,13 +120,14 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
                     } else {
 
                         Bundle b = new Bundle();
+
                         b.putString("raca", d.getRaca());
-                        b.putString("subraca", "");
+                        b.putString("pai", d.getPai());
+
+                        Log.e("Adapter raça: ", d.getRaca());
 
                         Intent i = new Intent(itemView.getContext(),
                                 CachorrinhoActivity.class);
-
-                        Log.e("Raça: ", d.getRaca());
 
                         i.putExtras(b);
 
@@ -102,14 +136,11 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
                 }
             });
 
+
         }
 
         public TextView getTv() {
             return tv;
-        }
-
-        public ImageView getImageView() {
-            return imageView;
         }
     }
 }

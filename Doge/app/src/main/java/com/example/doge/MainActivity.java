@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         rv = findViewById(R.id.rv);
-        adapterCachorros = new AdapterCachorros(this);
+        adapterCachorros = new AdapterCachorros(this, 150);
 
         conexao = new Conexao(this);
         conexao.atualizarAdapter(adapterCachorros);

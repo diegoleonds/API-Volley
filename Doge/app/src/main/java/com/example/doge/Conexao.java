@@ -97,7 +97,7 @@ public class Conexao {
 
                                     adapterList.add(aux);
 
-                                    //Log.e("Key: ", key + ", " + aux.isTemSubRacas());
+                                    Log.e("Key: ", key + ", " + aux.isTemSubRacas());
                                 }
                             }
 
@@ -147,7 +147,10 @@ public class Conexao {
 
                                     for (int i = 0; i < raca.length(); i++) {
 
-                                        adapterList.add(new Dog(raca.get(i).toString()));
+                                        Dog d = new Dog(raca.get(i).toString());
+                                        d.setPai(busca);
+
+                                        adapterList.add(d);
                                         Log.e("Subraça: ", adapterList.get(i).getRaca());
                                     }
                                 }
@@ -180,9 +183,17 @@ public class Conexao {
 
             url += raca + finalLinkImagem;
 
+            /*
+              private final String urlImg = "https://dog.ceo/api/breed/";
+              private final String finalLinkImagem = "/images/random";
+             */
+
         } else  {
 
-            url += raca + "-" + subraca + finalLinkImagem;
+            //https://dog.ceo/api/breed/australian/shepherd/images/random
+            url += raca + "/" + subraca + finalLinkImagem;
+
+            Log.e("Link da subraça: ", url);
         }
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -192,8 +203,11 @@ public class Conexao {
                     public void onResponse(JSONObject response) {
 
                         try {
+
                             String url = response.getString("message");
-                            Picasso.get().load(url).into(imageView);
+
+                            Picasso.get().load(url).
+                                    resize(300, 300).into(imageView);
 
                         } catch (JSONException e) {
 

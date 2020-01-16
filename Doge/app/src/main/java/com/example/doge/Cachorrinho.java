@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Dog {
 
-    private String raca;
+    private String raca, pai;
     private boolean temSubRacas;
 
     public Dog(String raca) {
@@ -26,11 +26,13 @@ class Dog {
         this.raca = raca;
     }
 
-    public boolean isTemSubRacas() {
-        return temSubRacas;
-    }
+    public boolean isTemSubRacas() { return temSubRacas; }
 
     public void setTemSubRacas(boolean temSubRacas) {
         this.temSubRacas = temSubRacas;
     }
+
+    public String getPai() { return pai; }
+
+    public void setPai(String pai) { this.pai = pai; }
 }

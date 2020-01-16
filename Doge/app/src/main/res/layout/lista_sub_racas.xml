@@ -8,12 +8,36 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_sub_racas"
-        tools:listitem="@layout/item_cachorrinho"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginTop="228dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_cachorrinho" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+
+        android:id="@+id/foto_pai"
+        android:layout_width="143dp"
+        android:layout_height="129dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/crashou"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nome_pai"
+        style="@style/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="180dp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="56dp"
+        android:text="TextView"
+        android:textSize="21sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,9 @@
 package com.example.doge;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +17,12 @@ import java.util.ArrayList;
 
 public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.CachorrosViewHolder> {
 
-    private ArrayList<Cachorrinho> cachorrinhos;
+    private ArrayList<Dog> dogs;
     private Context c;
 
     public AdapterCachorros(Context c){
 
-        cachorrinhos = new ArrayList<Cachorrinho>();
+        dogs = new ArrayList<Dog>();
         this.c = c;
     }
 
@@ -39,15 +42,15 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
 
         if (holder != null){
 
-            holder.tv.setText(cachorrinhos.get(position).getRaca());
+            holder.tv.setText(dogs.get(position).getRaca());
         }
     }
 
     @Override
-    public int getItemCount() { return cachorrinhos.size(); }
+    public int getItemCount() { return dogs.size(); }
 
-    public ArrayList<Cachorrinho> getCachorrinhos() {
-        return cachorrinhos;
+    public ArrayList<Dog> getDogs() {
+        return dogs;
     }
 
     public class CachorrosViewHolder extends RecyclerView.ViewHolder{
@@ -55,11 +58,49 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
         private final TextView tv;
         private final ImageView imageView;
 
-        public CachorrosViewHolder(@NonNull View itemView) {
+        public CachorrosViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             this.tv = itemView.findViewById(R.id.nome_cachorrinho);
             this.imageView = itemView.findViewById(R.id.foto_cachorrinho);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Dog d = dogs.get(getAdapterPosition());
+
+                    if (d.isTemSubRacas()) {
+
+                        Bundle b = new Bundle();
+                        b.putString("raca", d.getRaca());
+
+                        Log.e("Raça: ", d.getRaca());
+
+                        Intent i = new Intent(itemView.getContext(),
+                                listaSubClasses.class);
+
+                        i.putExtras(b);
+
+                        itemView.getContext().startActivity(i);
+
+                    } else {
+
+                        Bundle b = new Bundle();
+                        b.putString("raca", d.getRaca());
+                        b.putString("subraca", "");
+
+                        Intent i = new Intent(itemView.getContext(),
+                                CachorrinhoActivity.class);
+
+                        Log.e("Raça: ", d.getRaca());
+
+                        i.putExtras(b);
+
+                        itemView.getContext().startActivity(i);
+                    }
+                }
+            });
 
         }
 

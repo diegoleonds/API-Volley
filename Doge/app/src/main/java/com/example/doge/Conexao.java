@@ -3,6 +3,7 @@ package com.example.doge;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Adapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,10 +28,14 @@ import java.util.Iterator;
 public class Conexao {
 
     private final String url = "https://dog.ceo/api/breeds/list/all";
+    private final String urlImg = "https://dog.ceo/api/breed/";
+    private final String finalLinkImagem = "/images/random";
+
     private ArrayList<String> dados;
 
     private RequestQueue queue;
     private Context context;
+
 
 
     public Conexao(Context context) {
@@ -72,57 +78,35 @@ public class Conexao {
                     public void onResponse(JSONObject response) {
 
                         try {
-
-                            /*
-
-                            ArrayList<String> auxList = new ArrayList<String>();
-                            JSONArray aux = response.getJSONArray("message");
-                             */
-
                             JSONObject jsonObject = response.getJSONObject("message");
                             Iterator<String> keys = jsonObject.keys();
 
-                            while (keys.hasNext()){
+                            ArrayList<Dog> adapterList =
+                                    adapterCachorros.getDogs();
+
+                            while (keys.hasNext()) {
 
                                 String key = keys.next();
 
-                                if (jsonObject.get(key) instanceof JSONArray){
+                                if (jsonObject.get(key) instanceof JSONArray) {
 
                                     JSONArray raca = (JSONArray) jsonObject.get(key);
-                                    adapterCachorros.getCachorrinhos().add(new Cachorrinho(key));
 
-                                    Log.e("Key: ", key);
+                                    Dog aux = new Dog(key,
+                                            raca.length() > 0);
 
-                                    if (raca.length() > 0){
+                                    adapterList.add(aux);
 
-                                        for (int i = 0; i < raca.length(); i++)
-
-                                            adapterCachorros.getCachorrinhos().
-                                                    add(new Cachorrinho(raca.get(i).toString()));
-                                    }
-
+                                    //Log.e("Key: ", key + ", " + aux.isTemSubRacas());
                                 }
                             }
 
                             adapterCachorros.notifyDataSetChanged();
 
-                            /*
-                            for (int i = 0; i < aux.length(); i++) {
-
-                                adapterCachorros.getCachorrinhos().
-                                        add(new Cachorrinho(aux.get(i).toString()));
-
-                                //Log.e("Raças: ", cachorrinhos.get(i).toString());
-                            }
-
-                            adapterCachorros.notifyDataSetChanged();
-                             */
-
                         } catch (JSONException e) {
 
                             Log.e("erro", e.toString());
                         }
-
                     }
                 }, new Response.ErrorListener() {
 
@@ -136,6 +120,99 @@ public class Conexao {
 
         queue.add(jsonObjectRequest);
     }
+
+    public void atualizarAdapter(final AdapterCachorros adapterCachorros, final String busca) {
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONObject jsonObject = response.getJSONObject("message");
+                            Iterator<String> keys = jsonObject.keys();
+
+                            ArrayList<Dog> adapterList =
+                                    adapterCachorros.getDogs();
+
+                            while (keys.hasNext()) {
+
+                                String key = keys.next();
+                                Log.e("key: ", key);
+
+                                if (key.equals(busca)) {
+
+                                    JSONArray raca = (JSONArray) jsonObject.get(key);
+
+                                    for (int i = 0; i < raca.length(); i++) {
+
+                                        adapterList.add(new Dog(raca.get(i).toString()));
+                                        Log.e("Subraça: ", adapterList.get(i).getRaca());
+                                    }
+                                }
+                            }
+                            adapterCachorros.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+
+                            Log.e("erro", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                        Log.e("erro", error.toString());
+                    }
+                });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void setImg(final ImageView imageView, String raca, String subraca){
+
+        String url = urlImg;
+
+        if (subraca.equals("")){
+
+            url += raca + finalLinkImagem;
+
+        } else  {
+
+            url += raca + "-" + subraca + finalLinkImagem;
+        }
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            String url = response.getString("message");
+                            Picasso.get().load(url).into(imageView);
+
+                        } catch (JSONException e) {
+
+                            Log.e("erro", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                        Log.e("erro", error.toString());
+                    }
+                });
+
+        queue.add(jsonObjectRequest);
+    }
+
 
     private String capitalize(String s) {
 

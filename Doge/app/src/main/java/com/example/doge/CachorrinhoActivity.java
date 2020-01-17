@@ -2,10 +2,13 @@ package com.example.doge;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -15,6 +18,11 @@ public class CachorrinhoActivity extends AppCompatActivity {
     private CircleImageView fotoDog;
 
     private Conexao conexao;
+
+    private Animacao a;
+    private ArrayList<View> views;
+
+    private Texto texto;
 
     @Override
     protected void onCreate(Bundle b){
@@ -42,5 +50,20 @@ public class CachorrinhoActivity extends AppCompatActivity {
 
         }
 
+        a = new Animacao();
+        views = new ArrayList<View>();
+
+        views.add(fotoDog);
+        views.add(nomeDog);
+
+        texto = new Texto();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        texto.deixarPrimeiraLetaMaiuscula(nomeDog);
+        a.fade(views, 650, 120);
     }
 }

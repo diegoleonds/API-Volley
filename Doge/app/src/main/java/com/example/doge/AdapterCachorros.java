@@ -24,12 +24,15 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
 
     private int tempoDeAnimacao;
 
+    private Texto texto;
+
     public AdapterCachorros(Context c, int tempoDeAnimacao) {
 
         dogs = new ArrayList<Dog>();
         this.c = c;
 
         this.tempoDeAnimacao = tempoDeAnimacao;
+        this.texto = new Texto();
     }
 
     @NonNull
@@ -49,6 +52,8 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
         if (holder != null) {
 
             holder.tv.setText(dogs.get(position).getRaca());
+            texto.deixarPrimeiraLetaMaiuscula(holder.tv);
+            
             animacao(holder.itemView);
         }
     }
@@ -60,13 +65,8 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
 
     private void animacao(View itemView) {
 
-        itemView.setAlpha(0f);
-        itemView.setVisibility(View.VISIBLE);
-
-        itemView.animate()
-                .alpha(1f)
-                .setDuration(tempoDeAnimacao)
-                .setListener(null);
+        Animacao a = new Animacao();
+        a.fade(itemView, tempoDeAnimacao);
 
         /*
         boolean isNotFirstItem = i == -1;

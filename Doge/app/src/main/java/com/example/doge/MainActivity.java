@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,10 +24,17 @@ public class MainActivity extends AppCompatActivity {
     private TextView nomeUltimoDog;
     private CircleImageView fotoUltimoDog;
 
+    private Animacao a;
+    private ArrayList<View> views;
+
+    private Texto texto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        a = new Animacao();
 
         rv = findViewById(R.id.rv);
         adapterCachorros = new AdapterCachorros(this, 150);
@@ -38,6 +47,14 @@ public class MainActivity extends AppCompatActivity {
 
         nomeUltimoDog = findViewById(R.id.nome_ultimo_dog);
         fotoUltimoDog = findViewById(R.id.foto_ultimo_dog);
+
+        views = new ArrayList<View>();
+
+        views.add(nomeUltimoDog);
+        views.add(fotoUltimoDog);
+        views.add(rv);
+
+        texto = new Texto();
     }
 
     @Override
@@ -46,5 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
         dogDAO = DogDAO.getDogDAO();
         dogDAO.mostraUltimoDog(nomeUltimoDog, fotoUltimoDog);
+
+        texto.deixarPrimeiraLetaMaiuscula(nomeUltimoDog);
+
+        a.fade(views, 650, 120);
     }
 }

@@ -1,11 +1,14 @@
 package com.example.doge;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -18,6 +21,11 @@ public class listaSubClasses extends AppCompatActivity {
 
     private TextView nomePai;
     private CircleImageView imgPai;
+
+    private Animacao a;
+    private ArrayList<View> views;
+
+    private Texto texto;
 
     @Override
     protected void onCreate(Bundle b){
@@ -41,5 +49,22 @@ public class listaSubClasses extends AppCompatActivity {
 
         rv.setAdapter(adapterCachorros);
         rv.setLayoutManager(new LinearLayoutManager(this));
+
+        a = new Animacao();
+        views = new ArrayList<View>();
+
+        views.add(nomePai);
+        views.add(imgPai);
+        views.add(rv);
+
+        texto = new Texto();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        texto.deixarPrimeiraLetaMaiuscula(nomePai);
+        a.fade(views, 650, 120);
     }
 }

@@ -100,6 +100,8 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
                 public void onClick(View v) {
 
                     Dog d = dogs.get(getAdapterPosition());
+                    DogDAO.getDogDAO().setUltimoDog(d);
+
                     Log.e("Adapter click raça: ", d.getRaca() + ", " +
                             d.isTemSubRacas());
 
@@ -116,6 +118,8 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
                         i.putExtras(b);
 
                         itemView.getContext().startActivity(i);
+
+
 
                     } else {
 

@@ -18,6 +18,8 @@ class Dog {
         this.temSubRacas = temSubRacas;
     }
 
+    public boolean temPai(){ return pai != null; }
+
     public String getRaca() {
         return raca;
     }

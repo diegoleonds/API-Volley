@@ -1,13 +1,9 @@
 package com.example.doge;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +25,7 @@ public class listaSubClasses extends AppCompatActivity {
         setContentView(R.layout.lista_sub_racas);
 
         rv = findViewById(R.id.rv_sub_racas);
-        nomePai = findViewById(R.id.nome_pai);
+        nomePai = findViewById(R.id.nome_ultimo_dog);
         imgPai = findViewById(R.id.foto_pai);
 
         adapterCachorros = new AdapterCachorros(this, 600);

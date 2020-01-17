@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/nome_pai"
+        android:id="@+id/nome_ultimo_dog"
         style="@style/titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

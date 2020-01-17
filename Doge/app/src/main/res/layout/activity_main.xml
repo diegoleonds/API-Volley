@@ -18,7 +18,7 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
 
-        android:id="@+id/foto_anterior"
+        android:id="@+id/foto_ultimo_dog"
         android:layout_width="100dp"
         android:layout_height="88dp"
         android:layout_marginStart="16dp"
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/nome_pai"
+        android:id="@+id/nome_ultimo_dog"
         style="@style/titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

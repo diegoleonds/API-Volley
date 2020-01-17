@@ -1,21 +1,21 @@
-package com.example.doge;
+package com.example.doge.dados;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Adapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.doge.R;
+import com.example.doge.ui.uteis.AdapterCachorros;
+import com.example.doge.ui.uteis.Animacao;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -207,7 +207,81 @@ public class Conexao {
                             String url = response.getString("message");
 
                             Picasso.get().load(url).
-                                    resize(300, 300).into(imageView);
+                                    resize(300, 300).
+                                    error(R.drawable.crashou).
+                                    into(imageView,
+                                    new Callback.EmptyCallback(){
+
+                                        @Override
+                                        public void onSuccess(){
+
+                                        }
+                                    });
+
+
+                        } catch (JSONException e) {
+
+                            Log.e("erro", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                        Log.e("erro", error.toString());
+                    }
+                });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void setImg(final ImageView imageView, String raca, String subraca,
+                            final Animacao a){
+
+        String url = urlImg;
+
+        if (subraca.equals("")){
+
+            url += raca + finalLinkImagem;
+
+            /*
+              private final String urlImg = "https://dog.ceo/api/breed/";
+              private final String finalLinkImagem = "/images/random";
+             */
+
+        } else  {
+
+            //https://dog.ceo/api/breed/australian/shepherd/images/random
+            url += raca + "/" + subraca + finalLinkImagem;
+
+            Log.e("Link da subraça: ", url);
+        }
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+
+                            String url = response.getString("message");
+
+                            Picasso.get().load(url).
+                                    resize(300, 300).
+                                    into(imageView,
+                                            new Callback.EmptyCallback(){
+
+                                                @Override
+                                                public void onSuccess(){
+
+                                                    //a.fade(a.getViews(), 300, 250);
+                                                    a.reaparecer();
+                                                }
+                                            });
+
 
                         } catch (JSONException e) {
 

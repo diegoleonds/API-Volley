@@ -1,4 +1,4 @@
-package com.example.doge;
+package com.example.doge.ui.uteis;
 
 import android.widget.TextView;
 

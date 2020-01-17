@@ -1,7 +1,5 @@
-package com.example.doge;
+package com.example.doge.ui.uteis;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,11 +7,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.doge.ui.activities.CachorrinhoActivity;
+import com.example.doge.dados.Dog;
+import com.example.doge.dados.DogDAO;
+import com.example.doge.R;
+import com.example.doge.ui.activities.listaSubClassesActivity;
 
 import java.util.ArrayList;
 
@@ -113,7 +116,7 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
                         Log.e("Raça: ", d.getRaca());
 
                         Intent i = new Intent(itemView.getContext(),
-                                listaSubClasses.class);
+                                listaSubClassesActivity.class);
 
                         i.putExtras(b);
 

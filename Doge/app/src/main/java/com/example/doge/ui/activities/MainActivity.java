@@ -1,14 +1,20 @@
-package com.example.doge;
+package com.example.doge.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.doge.dados.Conexao;
+import com.example.doge.dados.Dog;
+import com.example.doge.dados.DogDAO;
+import com.example.doge.R;
+import com.example.doge.ui.uteis.AdapterCachorros;
+import com.example.doge.ui.uteis.Animacao;
+import com.example.doge.ui.uteis.Texto;
 
 import java.util.ArrayList;
 
@@ -62,10 +68,11 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         dogDAO = DogDAO.getDogDAO();
-        dogDAO.mostraUltimoDog(nomeUltimoDog, fotoUltimoDog);
+        Dog d = dogDAO.getUltimoDog();
+
+
 
         texto.deixarPrimeiraLetaMaiuscula(nomeUltimoDog);
 
-        a.fade(views, 650, 120);
     }
 }

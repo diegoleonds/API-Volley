@@ -1,14 +1,14 @@
-package com.example.doge;
+package com.example.doge.ui.activities;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
+import com.example.doge.dados.Conexao;
+import com.example.doge.R;
+import com.example.doge.ui.uteis.Animacao;
+import com.example.doge.ui.uteis.Texto;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -20,50 +20,43 @@ public class CachorrinhoActivity extends AppCompatActivity {
     private Conexao conexao;
 
     private Animacao a;
-    private ArrayList<View> views;
 
     private Texto texto;
 
     @Override
-    protected void onCreate(Bundle b){
+    protected void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.cachorrinho);
 
         nomeDog = findViewById(R.id.nome_dog);
         fotoDog = findViewById(R.id.foto_dog);
 
-        conexao = new Conexao(this);
         Bundle aux = getIntent().getExtras();
 
         String raca = aux.getString("raca");
         String pai = aux.getString("pai", "false");
 
-        if (pai.equals("false")) {
+        conexao = new Conexao(this);
+        a = new Animacao();
+
+        a.addView(fotoDog);
+        a.addView(nomeDog);
 
         nomeDog.setText(raca);
-        conexao.setImg(fotoDog, raca, "");
+        a.sumir();
+
+
+        if (pai.equals("false")) {
+
+            conexao.setImg(fotoDog, raca, "", a);
 
         } else {
 
-            nomeDog.setText(raca);
-            conexao.setImg(fotoDog, pai, raca);
 
         }
 
-        a = new Animacao();
-        views = new ArrayList<View>();
-
-        views.add(fotoDog);
-        views.add(nomeDog);
-
         texto = new Texto();
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-
         texto.deixarPrimeiraLetaMaiuscula(nomeDog);
-        a.fade(views, 650, 120);
     }
+
 }

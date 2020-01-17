@@ -1,4 +1,4 @@
-package com.example.doge;
+package com.example.doge.ui.activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,11 +8,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doge.ui.uteis.AdapterCachorros;
+import com.example.doge.ui.uteis.Animacao;
+import com.example.doge.dados.Conexao;
+import com.example.doge.R;
+import com.example.doge.ui.uteis.Texto;
+
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class listaSubClasses extends AppCompatActivity {
+public class listaSubClassesActivity extends AppCompatActivity {
 
     private RecyclerView rv;
     private AdapterCachorros adapterCachorros;
@@ -65,6 +71,6 @@ public class listaSubClasses extends AppCompatActivity {
         super.onResume();
 
         texto.deixarPrimeiraLetaMaiuscula(nomePai);
-        a.fade(views, 650, 120);
+
     }
 }

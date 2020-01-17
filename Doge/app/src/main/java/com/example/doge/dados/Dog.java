@@ -1,8 +1,6 @@
-package com.example.doge;
+package com.example.doge.dados;
 
-import java.util.ArrayList;
-
-class Dog {
+public class Dog {
 
     private String raca, pai;
     private boolean temSubRacas;

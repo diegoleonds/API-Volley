@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.activities.MainActivity">
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +20,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activities.listaSubClassesActivity"></activity>
-        <activity android:name=".ui.activities.CachorrinhoActivity"></activity>
+        <activity android:name=".view.ListaSubRacasActivity"></activity>
+        <activity android:name=".view.CachorrinhoActivity"></activity>
 
     </application>
 

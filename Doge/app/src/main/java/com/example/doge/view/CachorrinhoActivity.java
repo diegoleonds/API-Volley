@@ -1,14 +1,15 @@
-package com.example.doge.ui.activities;
+package com.example.doge.view;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.doge.dados.Conexao;
+import com.example.doge.controller.Controller;
+import com.example.doge.model.Conexao;
 import com.example.doge.R;
-import com.example.doge.ui.uteis.Animacao;
-import com.example.doge.ui.uteis.Texto;
+import com.example.doge.controller.Animacao;
+import com.example.doge.controller.Texto;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,16 +44,16 @@ public class CachorrinhoActivity extends AppCompatActivity {
         a.addView(nomeDog);
 
         nomeDog.setText(raca);
-        a.sumir();
 
+        Controller c = new Controller(this);
 
         if (pai.equals("false")) {
 
-            conexao.setImg(fotoDog, raca, "", a);
+            c.setImg(fotoDog, raca, "", a);
 
         } else {
 
-
+            c.setImg(fotoDog, pai, raca, a);
         }
 
         texto = new Texto();

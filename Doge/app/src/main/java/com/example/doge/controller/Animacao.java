@@ -1,4 +1,4 @@
-package com.example.doge.ui.uteis;
+package com.example.doge.controller;
 
 import android.view.View;
 

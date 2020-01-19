@@ -1,4 +1,4 @@
-package com.example.doge.dados;
+package com.example.doge.model;
 
 public class Dog {
 

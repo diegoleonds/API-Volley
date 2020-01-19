@@ -1,4 +1,4 @@
-package com.example.doge.ui.uteis;
+package com.example.doge.controller;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doge.ui.activities.CachorrinhoActivity;
-import com.example.doge.dados.Dog;
-import com.example.doge.dados.DogDAO;
+import com.example.doge.view.CachorrinhoActivity;
+import com.example.doge.model.Dog;
 import com.example.doge.R;
-import com.example.doge.ui.activities.listaSubClassesActivity;
+import com.example.doge.view.ListaSubRacasActivity;
 
 import java.util.ArrayList;
 
@@ -103,7 +102,6 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
                 public void onClick(View v) {
 
                     Dog d = dogs.get(getAdapterPosition());
-                    DogDAO.getDogDAO().setUltimoDog(d);
 
                     Log.e("Adapter click raça: ", d.getRaca() + ", " +
                             d.isTemSubRacas());
@@ -116,7 +114,7 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
                         Log.e("Raça: ", d.getRaca());
 
                         Intent i = new Intent(itemView.getContext(),
-                                listaSubClassesActivity.class);
+                                ListaSubRacasActivity.class);
 
                         i.putExtras(b);
 

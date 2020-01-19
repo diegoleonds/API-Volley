@@ -1,4 +1,4 @@
-package com.example.doge.ui.activities;
+package com.example.doge.view;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,17 +8,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doge.ui.uteis.AdapterCachorros;
-import com.example.doge.ui.uteis.Animacao;
-import com.example.doge.dados.Conexao;
+import com.example.doge.controller.AdapterCachorros;
+import com.example.doge.controller.Animacao;
+import com.example.doge.controller.Controller;
+import com.example.doge.model.Conexao;
 import com.example.doge.R;
-import com.example.doge.ui.uteis.Texto;
+import com.example.doge.controller.Texto;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class listaSubClassesActivity extends AppCompatActivity {
+public class ListaSubRacasActivity extends AppCompatActivity {
 
     private RecyclerView rv;
     private AdapterCachorros adapterCachorros;
@@ -28,9 +29,9 @@ public class listaSubClassesActivity extends AppCompatActivity {
     private TextView nomePai;
     private CircleImageView imgPai;
 
-    private Animacao a;
     private ArrayList<View> views;
 
+    private Controller controller;
     private Texto texto;
 
     @Override
@@ -50,18 +51,13 @@ public class listaSubClassesActivity extends AppCompatActivity {
         nomePai.setText(raca);
 
         conexao = new Conexao(this);
-        conexao.atualizarAdapter(adapterCachorros, raca);
-        conexao.setImg(imgPai, raca, "");
+        controller = new Controller(this);
+
+        controller.getSubDogs(adapterCachorros, raca);
+        controller.setImg(imgPai, raca, "", new Animacao());
 
         rv.setAdapter(adapterCachorros);
         rv.setLayoutManager(new LinearLayoutManager(this));
-
-        a = new Animacao();
-        views = new ArrayList<View>();
-
-        views.add(nomePai);
-        views.add(imgPai);
-        views.add(rv);
 
         texto = new Texto();
     }

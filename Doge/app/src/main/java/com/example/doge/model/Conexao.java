@@ -1,4 +1,4 @@
-package com.example.doge.dados;
+package com.example.doge.model;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,8 +13,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.doge.R;
-import com.example.doge.ui.uteis.AdapterCachorros;
-import com.example.doge.ui.uteis.Animacao;
+import com.example.doge.controller.AdapterCachorros;
+import com.example.doge.controller.Animacao;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -36,8 +36,6 @@ public class Conexao {
     private RequestQueue queue;
     private Context context;
 
-
-
     public Conexao(Context context) {
 
         this.context = context;
@@ -46,30 +44,7 @@ public class Conexao {
         dados = new ArrayList<String>();
     }
 
-    public void passarParaTela(final TextView tv) {
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        tv.setText("Response is: " + response.toString());
-
-                    }
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                tv.setText("Deu ruim");
-            }
-        });
-
-        queue.add(stringRequest);
-    }
-
-    public void atualizarAdapter(final AdapterCachorros adapterCachorros) {
+    public void getDogs(final AdapterCachorros adapterCachorros) {
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -121,7 +96,55 @@ public class Conexao {
         queue.add(jsonObjectRequest);
     }
 
-    public void atualizarAdapter(final AdapterCachorros adapterCachorros, final String busca) {
+    public void getDados(final ServerCallBack callBack) {
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        callBack.onSucess(response);
+                    }
+
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                        Log.e("erro", error.toString());
+                    }
+                });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void getImg(final ServerCallBack callBack, String url){
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        callBack.onSucess(response);
+                    }
+
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                        Log.e("erro", error.toString());
+                    }
+                });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void getSubDogs(final AdapterCachorros adapterCachorros, final String subDog) {
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -141,14 +164,14 @@ public class Conexao {
                                 String key = keys.next();
                                 Log.e("key: ", key);
 
-                                if (key.equals(busca)) {
+                                if (key.equals(subDog)) {
 
                                     JSONArray raca = (JSONArray) jsonObject.get(key);
 
                                     for (int i = 0; i < raca.length(); i++) {
 
                                         Dog d = new Dog(raca.get(i).toString());
-                                        d.setPai(busca);
+                                        d.setPai(subDog);
 
                                         adapterList.add(d);
                                         Log.e("Subraça: ", adapterList.get(i).getRaca());
@@ -301,16 +324,7 @@ public class Conexao {
         queue.add(jsonObjectRequest);
     }
 
-
-    private String capitalize(String s) {
-
-        if (s == null || s.isEmpty())
-            return s;
-
-        return s.substring(0, 1).toUpperCase() + s.substring(1);
-    }
-
-    public ArrayList<String> getDados() {
+    public ArrayList<String> getDogs() {
         return dados;
     }
 }

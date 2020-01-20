@@ -21,7 +21,7 @@
         </activity>
 
         <activity android:name=".view.ListaSubRacasActivity"></activity>
-        <activity android:name=".view.CachorrinhoActivity"></activity>
+        <activity android:name=".view.DogActivity"></activity>
 
     </application>
 

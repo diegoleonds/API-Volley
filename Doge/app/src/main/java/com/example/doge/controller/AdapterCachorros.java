@@ -1,9 +1,6 @@
 package com.example.doge.controller;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doge.view.CachorrinhoActivity;
 import com.example.doge.model.Dog;
 import com.example.doge.R;
-import com.example.doge.view.ListaSubRacasActivity;
 
 import java.util.ArrayList;
 
@@ -23,18 +18,21 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
 
     private ArrayList<Dog> dogs;
     private Context c;
+    private Click click;
 
     private int tempoDeAnimacao;
 
     private Texto texto;
 
-    public AdapterCachorros(Context c, int tempoDeAnimacao) {
+    public AdapterCachorros(Context c, int tempoDeAnimacao, Click click) {
 
         dogs = new ArrayList<Dog>();
         this.c = c;
 
         this.tempoDeAnimacao = tempoDeAnimacao;
         this.texto = new Texto();
+
+        this.click = click;
     }
 
     @NonNull
@@ -42,7 +40,7 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
     public AdapterCachorros.CachorrosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(
-                c).inflate(R.layout.item_cachorrinho,
+                c).inflate(R.layout.item_dog,
                 parent, false);
 
         return new CachorrosViewHolder(view);
@@ -101,43 +99,7 @@ public class AdapterCachorros extends RecyclerView.Adapter<AdapterCachorros.Cach
                 @Override
                 public void onClick(View v) {
 
-                    Dog d = dogs.get(getAdapterPosition());
-
-                    Log.e("Adapter click raça: ", d.getRaca() + ", " +
-                            d.isTemSubRacas());
-
-                    if (d.isTemSubRacas()) {
-
-                        Bundle b = new Bundle();
-                        b.putString("raca", d.getRaca());
-
-                        Log.e("Raça: ", d.getRaca());
-
-                        Intent i = new Intent(itemView.getContext(),
-                                ListaSubRacasActivity.class);
-
-                        i.putExtras(b);
-
-                        itemView.getContext().startActivity(i);
-
-
-
-                    } else {
-
-                        Bundle b = new Bundle();
-
-                        b.putString("raca", d.getRaca());
-                        b.putString("pai", d.getPai());
-
-                        Log.e("Adapter raça: ", d.getRaca());
-
-                        Intent i = new Intent(itemView.getContext(),
-                                CachorrinhoActivity.class);
-
-                        i.putExtras(b);
-
-                        itemView.getContext().startActivity(i);
-                    }
+                    click.clicou(dogs.get(getAdapterPosition()));
                 }
             });
 

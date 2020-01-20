@@ -6,11 +6,13 @@ import com.example.doge.controller.AdapterCachorros;
 
 public class Model {
 
+    public static Dog ultimoDog;
     private Conexao conexao;
 
     public Model(Context context) {
 
         this.conexao = new Conexao(context);
+        ultimoDog = null;
     }
 
     public void getDados(ServerCallBack serverCallBack){
@@ -22,4 +24,6 @@ public class Model {
 
         conexao.getImg(serverCallBack, url);
     }
+
+
 }

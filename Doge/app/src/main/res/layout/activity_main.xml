@@ -14,7 +14,7 @@
         android:layout_marginTop="128dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_cachorrinho" />
+        tools:listitem="@layout/item_dog" />
 
     <de.hdodenhof.circleimageview.CircleImageView
 

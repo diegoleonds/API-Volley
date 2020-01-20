@@ -16,4 +16,17 @@
 
     </style>
 
+    <style name="fab">
+
+        <item name="android:tint">@color/corDeIconeFAB</item>
+
+    </style>
+
+    <style name="img_btn">
+
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:tint">@color/corNFav</item>
+
+    </style>
+
 </resources>

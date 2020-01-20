@@ -14,6 +14,7 @@ import com.example.doge.controller.Controller;
 import com.example.doge.model.Conexao;
 import com.example.doge.R;
 import com.example.doge.controller.Texto;
+import com.example.doge.model.Dog;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,6 @@ public class ListaSubRacasActivity extends AppCompatActivity {
 
     private RecyclerView rv;
     private AdapterCachorros adapterCachorros;
-    private Conexao conexao;
     private String raca;
 
     private TextView nomePai;
@@ -43,15 +43,15 @@ public class ListaSubRacasActivity extends AppCompatActivity {
         nomePai = findViewById(R.id.nome_ultimo_dog);
         imgPai = findViewById(R.id.foto_pai);
 
-        adapterCachorros = new AdapterCachorros(this, 600);
+        controller = new Controller(this);
+
+        adapterCachorros = new AdapterCachorros(this, 600,
+                controller.clickSemSubRaca(this));
 
         Bundle aux = getIntent().getExtras();
         raca = aux.getString("raca");
 
         nomePai.setText(raca);
-
-        conexao = new Conexao(this);
-        controller = new Controller(this);
 
         controller.getSubDogs(adapterCachorros, raca);
         controller.setImg(imgPai, raca, "", new Animacao());
@@ -66,6 +66,7 @@ public class ListaSubRacasActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
 
+        controller.setUltimoDog(new Dog(raca, ""));
         texto.deixarPrimeiraLetaMaiuscula(nomePai);
 
     }

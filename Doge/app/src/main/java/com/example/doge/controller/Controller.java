@@ -1,12 +1,23 @@
 package com.example.doge.controller;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import com.example.doge.R;
 import com.example.doge.model.Dog;
 import com.example.doge.model.Model;
 import com.example.doge.model.ServerCallBack;
+import com.example.doge.view.DogActivity;
+import com.example.doge.view.ListaSubRacasActivity;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -21,11 +32,13 @@ public class Controller {
 
     private Model model;
     private Context context;
+    private Texto texto;
 
     public Controller(Context context){
 
         this.context = context;
         model = new Model(context);
+        texto = new Texto();
     }
 
     public void getDogs(final AdapterCachorros adapterCachorros){
@@ -84,7 +97,6 @@ public class Controller {
                     while (keys.hasNext()) {
 
                         String key = keys.next();
-                        Log.e("key: ", key);
 
                         if (key.equals(subDog)) {
 
@@ -96,7 +108,6 @@ public class Controller {
                                 d.setPai(subDog);
 
                                 adapterList.add(d);
-                                Log.e("Subraça: ", adapterList.get(i).getRaca());
                             }
                         }
                     }
@@ -110,6 +121,19 @@ public class Controller {
         });
     }
 
+    public void setImgFinal(final ImageView imageView, String pai, String raca,
+                            final Animacao a){
+
+        if (pai.equals("")){
+
+            setImg(imageView, raca, "", a);
+
+        } else {
+
+            setImg(imageView, pai, raca, a);
+        }
+    }
+
     public void setImg(final ImageView imageView, String raca, String subRaca,
                 final Animacao a){
 
@@ -120,17 +144,11 @@ public class Controller {
 
             url += raca + finalLinkImagem;
 
-            /*
-              private final String urlImg = "https://dog.ceo/api/breed/";
-              private final String finalLinkImagem = "/images/random";
-             */
-
         } else  {
 
-            //https://dog.ceo/api/breed/australian/shepherd/images/random
             url += raca + "/" + subRaca + finalLinkImagem;
-
             Log.e("Link da subraça: ", url);
+
         }
 
         model.getImg(new ServerCallBack() {
@@ -140,7 +158,6 @@ public class Controller {
                 try {
 
                     String url = result.getString("message");
-                    Log.e("url", url);
 
                     Picasso.get().load(url).
                             resize(300, 300).
@@ -150,11 +167,9 @@ public class Controller {
                                         @Override
                                         public void onSuccess(){
 
-                                            //a.fade(a.getViews(), 300, 250);
 
                                         }
                                     });
-
 
                 } catch (JSONException e) {
 
@@ -163,4 +178,97 @@ public class Controller {
             }
         }, url);
     }
+
+    public void setUltimoDogNaTela(ImageView imageView, Animacao a, TextView textView){
+
+        Dog aux = Model.ultimoDog;
+
+        if (aux != null){
+
+            if (aux.getPai().equals("")){
+
+                setImg(imageView, aux.getRaca(), "", a);
+
+            } else {
+
+                setImg(imageView, aux.getPai(), aux.getRaca(), a);
+            }
+
+            textView.setText(aux.getRaca());
+            texto.deixarPrimeiraLetaMaiuscula(textView);
+        }
+    }
+
+    public Click clickMostraDog(final Context context){
+
+        return new Click() {
+            @Override
+            public void clicou(Dog dog) {
+
+                if (dog.isTemSubRacas()){
+
+                    comSubRaca(context, dog);
+
+                } else {
+
+                    semSubRaca(context, dog);
+                }
+            }
+        };
+    }
+
+    public Click clickSemSubRaca(final Context context){
+
+        return new Click() {
+            @Override
+            public void clicou(Dog dog) {
+
+                semSubRaca(context, dog);
+            }
+        };
+    }
+
+    public void addFavoritos(final ImageButton imageButton){
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                imageButton.setColorFilter(ContextCompat.getColor(context, R.color.corFav),
+                        android.graphics.PorterDuff.Mode.MULTIPLY);
+            }
+        });
+    }
+
+    private void semSubRaca(Context context, Dog dog){
+
+        Bundle b = new Bundle();
+
+        b.putString("raca", dog.getRaca());
+        b.putString("pai", dog.getPai());
+
+        Intent i = new Intent(context,
+                DogActivity.class);
+
+        i.putExtras(b);
+
+        context.startActivity(i);
+    }
+
+    private void comSubRaca(Context context, Dog dog){
+
+        Bundle b = new Bundle();
+        b.putString("raca", dog.getRaca());
+
+        Intent i = new Intent(context,
+                ListaSubRacasActivity.class);
+
+        i.putExtras(b);
+
+        context.startActivity(i);
+    }
+
+    public void setUltimoDog(Dog ultimoDog){ Model.ultimoDog = ultimoDog; }
+
+    public Dog getUltimoDog(){ return Model.ultimoDog; }
 }

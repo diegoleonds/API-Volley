@@ -1,24 +1,24 @@
 package com.example.doge.view;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.doge.controller.Controller;
-import com.example.doge.model.Conexao;
 import com.example.doge.R;
 import com.example.doge.controller.Animacao;
 import com.example.doge.controller.Texto;
+import com.example.doge.model.Dog;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CachorrinhoActivity extends AppCompatActivity {
+public class DogActivity extends AppCompatActivity {
 
     private TextView nomeDog;
     private CircleImageView fotoDog;
-
-    private Conexao conexao;
+    private ImageButton btnFav;
 
     private Animacao a;
 
@@ -27,37 +27,29 @@ public class CachorrinhoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle b) {
         super.onCreate(b);
-        setContentView(R.layout.cachorrinho);
+        setContentView(R.layout.dog);
 
         nomeDog = findViewById(R.id.nome_dog);
         fotoDog = findViewById(R.id.foto_dog);
+        btnFav = findViewById(R.id.fav_dog);
 
         Bundle aux = getIntent().getExtras();
 
         String raca = aux.getString("raca");
-        String pai = aux.getString("pai", "false");
-
-        conexao = new Conexao(this);
-        a = new Animacao();
-
-        a.addView(fotoDog);
-        a.addView(nomeDog);
+        String pai = aux.getString("pai", "");
 
         nomeDog.setText(raca);
 
         Controller c = new Controller(this);
+        Animacao a = new Animacao();
 
-        if (pai.equals("false")) {
-
-            c.setImg(fotoDog, raca, "", a);
-
-        } else {
-
-            c.setImg(fotoDog, pai, raca, a);
-        }
+        c.setUltimoDog(new Dog(raca, pai));
+        c.setImgFinal(fotoDog, pai, raca, new Animacao());
+        c.addFavoritos(btnFav);
 
         texto = new Texto();
         texto.deixarPrimeiraLetaMaiuscula(nomeDog);
+
     }
 
 }

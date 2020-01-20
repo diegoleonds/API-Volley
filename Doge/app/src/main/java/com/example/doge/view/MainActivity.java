@@ -30,15 +30,16 @@ public class MainActivity extends AppCompatActivity {
     private Animacao a;
     private ArrayList<View> views;
 
-    private Texto texto;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         rv = findViewById(R.id.rv);
-        adapterCachorros = new AdapterCachorros(this, 150);
+        controller = new Controller(this);
+
+        adapterCachorros = new AdapterCachorros(this, 150,
+                controller.clickMostraDog(this));
 
         rv.setAdapter(adapterCachorros);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -46,10 +47,17 @@ public class MainActivity extends AppCompatActivity {
         nomeUltimoDog = findViewById(R.id.nome_ultimo_dog);
         fotoUltimoDog = findViewById(R.id.foto_ultimo_dog);
 
-        texto = new Texto();
+        a = new Animacao();
 
-        controller = new Controller(this);
         controller.getDogs(adapterCachorros);
+        controller.setUltimoDogNaTela(fotoUltimoDog, a, nomeUltimoDog);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        controller.setUltimoDogNaTela(fotoUltimoDog, a, nomeUltimoDog);
     }
 
 }
